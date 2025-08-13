@@ -4,6 +4,7 @@ import com.kshrd.spring_data_jpa.model.Employee;
 import com.kshrd.spring_data_jpa.model.request.EmployeeRequest;
 import com.kshrd.spring_data_jpa.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,27 +16,33 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping
-    List<Employee> getAllEmployees(Integer page, Integer size) {
-        return null;
+    Page<Employee> getAllEmployees(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "5") Integer size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "false") Boolean desc
+    ) {
+        return employeeService.getAllEmployees(page, size, sortBy, desc);
     }
 
     @GetMapping("/{id}")
     Employee getEmployeeById(Long id) {
-        return null;
+        return employeeService.getEmployeeById(id);
     }
 
     @PostMapping
     Employee createEmployee(EmployeeRequest employeeRequest) {
-        return null;
+        return employeeService.createEmployee(employeeRequest);
     }
 
     @PutMapping("/{id}")
     Employee updateEmployee(@PathVariable Long id, EmployeeRequest employeeRequest) {
-        return null;
+        return employeeService.updateEmployee(id, employeeRequest);
     }
 
     @DeleteMapping("/{id}")
     String deleteEmployee(Long id) {
-        return null;
+        employeeService.deleteEmployee(id);
+        return "Delete successfully";
     }
 }
